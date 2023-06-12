@@ -6,19 +6,19 @@ phases:
       nodejs: 18
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
+      - echo "Logging in to Amazon ECR..."
       - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/w4j9t4w0
   build:
     commands:
-      - echo Building Docker image...
+      - echo "Building Docker image..."
       - docker build -t awsfargate .
-      - echo Pushing Docker image to ECR...
+      - echo "Pushing Docker image to ECR..."
       - docker tag awsfargate:latest public.ecr.aws/w4j9t4w0/awsfargate:latest
       - docker push public.ecr.aws/w4j9t4w0/awsfargate:latest
   post_build:
     commands:
-      - echo Build completed on date
-      - echo Creating image definitions file...
+      - echo "Build completed on 'date'"
+      - echo "Creating image definitions file..."
       - echo '[{"name":"nodejs","imageUri":"public.ecr.aws/w4j9t4w0/awsfargate:latest","containerPort":8080}]' > imagedefinitions.json
 
 artifacts:
